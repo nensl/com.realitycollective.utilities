@@ -67,6 +67,12 @@ namespace RealityCollective.Extensions
             "Bee",
             "NiceIO"
         };
+        
+        private static string[] ignoredDomainsExceptions = new string[]
+        {
+            "Monodot",
+            "Monodot.Core"
+        };
 
         private static Assembly[] filterIgnoredDomains(this Assembly[] assemblies)
         {
@@ -79,7 +85,20 @@ namespace RealityCollective.Extensions
                 {
                     if (assemblies[i].FullName.ToLower().Contains(ignoredDomains[j].ToLower()))
                     {
-                        ignoreAssembly = true;
+                        bool exception = false;
+                        
+                        for (int k = 0; k < ignoredDomainsExceptions.Length; k++)
+                        {
+                            if (assemblies[i].FullName.ToLower().Contains(ignoredDomainsExceptions[k].ToLower()))
+                            {
+                                exception = true;
+                            }
+                        }
+                        
+                        if(!exception)
+                        {
+                            ignoreAssembly = true;
+                        }
                     }
                 }
 
